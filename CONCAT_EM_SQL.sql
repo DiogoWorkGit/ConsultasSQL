@@ -1,0 +1,31 @@
+
+--Traga do banco as seguintes informações:
+--Número da Loja,
+--Sigla do Estado,
+--Nome do Estado,
+--Código da Cidade,
+--Nome da Cidade,
+--Nome do Bairro,
+--CEP,
+--Endereço completo (Logradouro, Número, Complemento, Bairro, Município-UF, CEP) -- CONCATENAR
+
+SELECT 
+    DB_LOJA.NR_LOJA AS Numero_da_loja,
+    DB_ESTADO.SG_ESTADO AS Sigla_Estado,
+    DB_ESTADO.NM_ESTADO AS Nome_Estado,
+    DB_CIDADE.CD_CIDADE AS Codigo_Cidade,
+    DB_CIDADE.NM_CIDADE AS Nome_Cidade,
+    DB_BAIRRO.NM_BAIRRO AS Nome_Bairro,
+    DB_LOGRADOURO.NR_CEP AS CEP,
+    DB_LOGRADOURO.NM_LOGRADOURO || ', ' || DB_BAIRRO.NM_BAIRRO || ', ' || DB_CIDADE.NM_CIDADE || ' - ' || DB_ESTADO.NM_ESTADO || ' (' || DB_ESTADO.SG_ESTADO || '), ' || DB_LOGRADOURO.NR_CEP AS Endereco_Completo
+FROM DB_LOJA
+INNER JOIN DB_END_LOJA 
+    ON DB_LOJA.NR_LOJA = DB_END_LOJA.NR_LOJA
+INNER JOIN DB_LOGRADOURO 
+    ON DB_END_LOJA.CD_LOGRADOURO = DB_LOGRADOURO.CD_LOGRADOURO
+INNER JOIN DB_BAIRRO
+    ON DB_LOGRADOURO.CD_BAIRRO = DB_BAIRRO.CD_BAIRRO
+INNER JOIN DB_CIDADE
+    ON DB_BAIRRO.CD_CIDADE = DB_CIDADE.CD_CIDADE
+INNER JOIN DB_ESTADO
+    ON DB_CIDADE.SG_ESTADO = DB_ESTADO.SG_ESTADO;
